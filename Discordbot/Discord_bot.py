@@ -3,10 +3,10 @@
 import discord #discord.py module
 import pickle
 from pathlib import Path #För att sätta filväg
-
+import os
 
 def pull_data_pickel(sida, post_id): # Hämtar datan för en post genom argumenten: facebooksidan och tiden den postades
-    postname_pickle = str(sida) + str(post_id) + 'post.pkl' #genererar unikt filnamn med facebooksida och tiden den postades
+    postname_pickle = str(sida) + str(post_id) + '.pkl' #genererar unikt filnamn med facebooksida och tiden den postades
     file = Path(".") / "Pickle" / postname_pickle #sätter rätt filväg
     with open(file,'rb') as sidorpickle:
         post = pickle.load(sidorpickle)
@@ -14,8 +14,13 @@ def pull_data_pickel(sida, post_id): # Hämtar datan för en post genom argument
 
 def print_data(post): #printar datan från en post
     #print()
-    return(f"{post['text']} \n {post['post_text']} \n {post['post_url']} \n {post['time']} \n {post['link']} \n")
+    return(f"{post['text']} \n För mer info, se här: {post['post_url']} \n\n Detta var postat: {post['time']} \n\n\n")
     
+sidor =	{ #Här skriver vi alla sidor vi ska scrapea
+    "IT-Klubbverk": "itklubbv",
+    #"Norrlands nation": "norrlands.nation/events",
+    #"Södermanlands-Nerikes Nation":"snerikes",
+}
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -42,8 +47,17 @@ class MyClient(discord.Client):
                                             "```")
                                         
             elif command == "event": #Checks if the command is event
-                await message.channel.send(print_data(pull_data_pickel("IT-Klubbverk", 399825645201318)))
-                
+
+                for sida in sidor:
+
+                    directory= Path(".") / "Pickle"
+                    number_of_files = len(os.listdir(directory)) # your directory path
+                    
+                    for x in range(1, number_of_files):
+                        await message.channel.send(print_data(pull_data_pickel(sida, x)))
+
+
+
             else:
                 await message.channel.send("This command doesn't exist")
 
@@ -54,4 +68,4 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-client.run('MTAzMDQ2NDQxODc0MTQ5NzkxNg.GEYE03.EIzxCuFmoIXPa0Vk8g0mJP2M0WiRzSVm1If3HQ')
+client.run('') #Lägg in token här!!

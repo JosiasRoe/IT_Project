@@ -8,15 +8,15 @@ from pathlib import Path #För att sätta filväg
 
 
 
-def store_data_pickel(sida, post):
-    postname_pickle = str(sida) + str(post['post_id']) + 'post.pkl' #genererar unikt filnamn med facebooksida och post nummret
+def store_data_pickel(sida, post_nummer):
+    postname_pickle = str(sida) + str(post_nummer) + '.pkl' #genererar unikt filnamn med facebooksida och post nummret
     print(f"Denna post sparas under namnet: {postname_pickle}") #Endast för oss att kunna checka att det blivit rätt enklare
     file = Path(".") / "Pickle" / postname_pickle #Gör att filen hamnar i mappen "Pickle" (Så vi får bättre organisation)
     with open(file,'wb') as sidorpickle: 
         pickle.dump(post, sidorpickle)
 
-def pull_data_pickel(sida, post): # Hämtar datan för en post genom argumenten: facebooksidan och tiden den postades
-    postname_pickle = str(sida) + str(post['post_id']) + 'post.pkl' #genererar unikt filnamn med facebooksida och tiden den postades
+def pull_data_pickel(sida, post_nummer): # Hämtar datan för en post genom argumenten: facebooksidan och tiden den postades
+    postname_pickle = str(sida) + str(post_nummer) + '.pkl' #genererar unikt filnamn med facebooksida och tiden den postades
     file = Path(".") / "Pickle" / postname_pickle #sätter rätt filväg
     with open(file,'rb') as sidorpickle:
         post = pickle.load(sidorpickle)
@@ -53,6 +53,8 @@ for x in sidor: #En sida i taget
     print(f"Namnet på facebooksidan: {sidor[x]} \n\n\n")
 
     n=1 #Har n nu temporärt, gör att vi bara printar 3 posts (enklare att läsa) (scrapear dock lika mycket så sparar inte tid)
+    
+    post_nummer = 1
 
     #for post in get_posts(sidor[x], pages=3, credentials=("lukasspam10@gmail.com","d%6D9J^ZqTbG&1op"), options={"allow_extra_requests": False, "posts_per_page": 200}): #En loopning = en post
     for post in get_posts(sidor[x], pages=3, credentials=("itprojekt.test123@gmail.com","kiwzod-kymdyz-qaVzy1"), options={"allow_extra_requests": False, "posts_per_page": 3}): #En loopning = en post
@@ -60,16 +62,17 @@ for x in sidor: #En sida i taget
             print(f"Post: {n}")
 
 
-            store_data_pickel(x, post) #Sparar datan med pickle
+            store_data_pickel(x, post_nummer) #Sparar datan med pickle
             
             
             print("Print av post data: \n")
             print_data(post)
             print()
             #print("Print av pickle data: \n")
-            #print_data(pull_data_pickel(x, post)) #printar datan den nyss spara genom att unpicklea den dirket
+            #print_data(pull_data_pickel(x, post_nummer)) #printar datan den nyss spara genom att unpicklea den dirket
             print()
             
+            post_nummer += 1
             n += 1
 
             
