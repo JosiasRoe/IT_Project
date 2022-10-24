@@ -2,20 +2,11 @@
 from facebook_scraper import get_posts 
 from facebook_scraper import * #För user agent
 
-from sys import exit #För exit(0) så att man kan enklare debugga
-
 import pickle
 from pathlib import Path #För att sätta filväg
 
-import browser_cookie3
 
 
-#To Do:
-#Funkar inte med 'time'?
-#Scrapear samma post om och om igen?
-    #Kan va samma probelm som 'time'
-#Måste ha nåt som är unikt för varje post men oxå nåt man alltid kan komma fram till även senare
-    #post url?
 
 def store_data_pickel(sida, post):
     postname_pickle = str(sida) + str(post['post_id']) + 'post.pkl' #genererar unikt filnamn med facebooksida och post nummret
