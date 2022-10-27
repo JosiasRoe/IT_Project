@@ -114,4 +114,4 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-client.run('MTAzMDQ2NDQxODc0MTQ5NzkxNg.G-H6Vy.Nu2f1QFI2WONXhp-rIRtaIG04QDqmw9sSG4M4o') #Lägg in token här!!
+client.run('') #Lägg in token här!!
