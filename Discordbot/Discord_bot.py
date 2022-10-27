@@ -6,7 +6,6 @@ from pathlib import Path #För att sätta filväg
 import os
 
 def pull_data_pickel(file): # Hämtar datan för en post genom argumenten: facebooksidan och tiden den postades
-    #postname_pickle = str(sida) + str(post_id) + '.pkl' #genererar unikt filnamn med facebooksida och tiden den postades
     file_path = Path(".") / "Pickle" / file #sätter rätt filväg
     with open(file_path,'rb') as sidorpickle:
         post = pickle.load(sidorpickle)
@@ -14,7 +13,7 @@ def pull_data_pickel(file): # Hämtar datan för en post genom argumenten: faceb
 
 def print_data(post, sida): #printar datan från en post
     #print()
-    return(f"```{sida}:\n{post['text']} \n\n Detta var postat: {post['time']} \n``` För mer info, se här: {post['post_url']}")
+    return(f"```{sida}:\n{post['text']} \n\nDetta var postat: {post['time']} \n``` För mer info, se här: {post['post_url']}")
     
 sidor =	{ #Här skriver vi alla sidor vi ska scrapea
     "IT-Klubbverk": "itklubbv",
@@ -27,7 +26,6 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
 
-    
 
     async def on_message(self, message):
         #await message.author.send("hello user") #Sends private message to user.
@@ -73,6 +71,7 @@ class MyClient(discord.Client):
                         if file.startswith("IT-Klubbverk"):
                             await message.channel.send(print_data(pull_data_pickel(file), "IT-Klubbverk"))
                             n += 1
+                            break
                         else:
                             break
 
@@ -86,6 +85,7 @@ class MyClient(discord.Client):
                         if file.startswith("Norrlands nation"):
                             await message.channel.send(print_data(pull_data_pickel(file), "Norrlands nation"))
                             n += 1
+                            break
                         else: 
                             break
             
@@ -99,6 +99,7 @@ class MyClient(discord.Client):
                         if file.startswith("Södermanlands-Nerikes Nation"):
                             await message.channel.send(print_data(pull_data_pickel(file), "Södermanlands-Nerikes Nation"))
                             n += 1
+                            break
                         else:
                             break
 
@@ -113,4 +114,4 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-client.run('MTAzMDQ2NDQxODc0MTQ5NzkxNg.GVfPZX.prt7cjOqmm48HeYdb4bUs-06dOwJervtz8Pnv8') #Lägg in token här!!
+client.run('MTAzMDQ2NDQxODc0MTQ5NzkxNg.G-H6Vy.Nu2f1QFI2WONXhp-rIRtaIG04QDqmw9sSG4M4o') #Lägg in token här!!
