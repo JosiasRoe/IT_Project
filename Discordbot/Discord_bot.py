@@ -5,21 +5,21 @@ import pickle
 from pathlib import Path #För att sätta filväg
 import os
 
-def pull_data_pickel(sida, post_id): # Hämtar datan för en post genom argumenten: facebooksidan och tiden den postades
-    postname_pickle = str(sida) + str(post_id) + '.pkl' #genererar unikt filnamn med facebooksida och tiden den postades
-    file = Path(".") / "Pickle" / postname_pickle #sätter rätt filväg
-    with open(file,'rb') as sidorpickle:
+def pull_data_pickel(file): # Hämtar datan för en post genom argumenten: facebooksidan och tiden den postades
+    #postname_pickle = str(sida) + str(post_id) + '.pkl' #genererar unikt filnamn med facebooksida och tiden den postades
+    file_path = Path(".") / "Pickle" / file #sätter rätt filväg
+    with open(file_path,'rb') as sidorpickle:
         post = pickle.load(sidorpickle)
     return post
 
-def print_data(post): #printar datan från en post
+def print_data(post, sida): #printar datan från en post
     #print()
-    return(f"{post['text']} \n För mer info, se här: {post['post_url']} \n\n Detta var postat: {post['time']} \n\n\n")
+    return(f"```{sida}:\n{post['text']} \n\n Detta var postat: {post['time']} \n``` För mer info, se här: {post['post_url']}")
     
 sidor =	{ #Här skriver vi alla sidor vi ska scrapea
     "IT-Klubbverk": "itklubbv",
-    #"Norrlands nation": "norrlands.nation/events",
-    #"Södermanlands-Nerikes Nation":"snerikes",
+    "Norrlands nation": "norrlands.nation",
+    "Södermanlands-Nerikes Nation":"snerikes",
 }
 
 class MyClient(discord.Client):
@@ -44,17 +44,60 @@ class MyClient(discord.Client):
                                             "help - This is the help command\n"
                                             "stats - All the servers stats only available for admins\n"
                                             "notifications - Manage your notifications\n"
+                                            "event all\n"
+                                            "event it\n"
+                                            "event norrlands\n"
+                                            "event snerikes\n"
                                             "```")
                                         
-            elif command == "event": #Checks if the command is event
+            elif command == "event all": #Checks if the command is event
 
                 for sida in sidor:
 
-                    directory= Path(".") / "Pickle"
-                    number_of_files = len(os.listdir(directory)) # your directory path
+                    directory= Path(".") / "Pickle" # directory path
                     
-                    for x in range(1, number_of_files):
-                        await message.channel.send(print_data(pull_data_pickel(sida, x)))
+                    for file in os.listdir(directory):
+                        if file.startswith(sida):
+                            await message.channel.send(print_data(pull_data_pickel(file), sida))
+
+            elif command == "event it": #Checks if the command is event it
+
+                directory= Path(".") / "Pickle" # directory path
+                n = 1
+                for file in os.listdir(directory):
+                    while n <= 5:
+                        if file.startswith("IT-Klubbverk"):
+                            await message.channel.send(print_data(pull_data_pickel(file), "IT-Klubbverk"))
+                            n += 1
+                        else:
+                            break
+
+
+            elif command == "event norrlands": #Checks if the command is event it
+
+                directory= Path(".") / "Pickle" # directory path
+                n = 1
+                for file in os.listdir(directory):
+                    while n <= 5:
+                        if file.startswith("Norrlands nation"):
+                            await message.channel.send(print_data(pull_data_pickel(file), "Norrlands nation"))
+                            n += 1
+                        else: 
+                            break
+            
+            elif command == "event snerikes": #Checks if the command is event it
+
+                directory= Path(".") / "Pickle" # directory path
+                n = 1
+                for file in os.listdir(directory):
+                    while n <= 5:
+                        if file.startswith("Södermanlands-Nerikes Nation"):
+                            await message.channel.send(print_data(pull_data_pickel(file), "Södermanlands-Nerikes Nation"))
+                            n += 1
+                        else:
+                            break
+
+                        
 
 
 
@@ -68,4 +111,4 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-client.run('') #Lägg in token här!!
+client.run('MTAzMDQ2NDQxODc0MTQ5NzkxNg.GVfPZX.prt7cjOqmm48HeYdb4bUs-06dOwJervtz8Pnv8') #Lägg in token här!!

@@ -41,8 +41,8 @@ set_user_agent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.
 
 
 sidor =	{ #Här skriver vi alla sidor vi ska scrapea
-    "IT-Klubbverk": "itklubbv",
-    #"Norrlands nation": "norrlands.nation/events",
+    #"IT-Klubbverk": "itklubbv",
+    "Norrlands nation": "norrlands.nation",
     #"Södermanlands-Nerikes Nation":"snerikes",
 }
 
