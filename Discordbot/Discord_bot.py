@@ -22,9 +22,12 @@ sidor =	{ #Här skriver vi alla sidor vi ska scrapea
     "Södermanlands-Nerikes Nation":"snerikes",
 }
 
+
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
+
+    
 
     async def on_message(self, message):
         #await message.author.send("hello user") #Sends private message to user.
@@ -60,8 +63,9 @@ class MyClient(discord.Client):
                         if file.startswith(sida):
                             await message.channel.send(print_data(pull_data_pickel(file), sida))
 
-            elif command == "event it": #Checks if the command is event it
 
+            elif command == "event it": #Checks if the command is event it
+                
                 directory= Path(".") / "Pickle" # directory path
                 n = 1
                 for file in os.listdir(directory):
@@ -85,6 +89,7 @@ class MyClient(discord.Client):
                         else: 
                             break
             
+
             elif command == "event snerikes": #Checks if the command is event it
 
                 directory= Path(".") / "Pickle" # directory path
@@ -96,9 +101,6 @@ class MyClient(discord.Client):
                             n += 1
                         else:
                             break
-
-                        
-
 
 
             else:
