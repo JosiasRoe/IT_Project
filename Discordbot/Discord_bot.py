@@ -12,7 +12,6 @@ def pull_data_pickel(file): # Hämtar datan för en post genom argumenten: faceb
     return post
 
 def print_data(post, sida): #printar datan från en post
-    #print()
     return(f"```{sida}:\n{post['text']} \n\nDetta var postat: {post['time']} \n``` För mer info, se här: {post['post_url']}")
     
 sidor =	{ #Här skriver vi alla sidor vi ska scrapea
@@ -26,19 +25,21 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
 
+    async def on_message(self, message):
+        print(f'Message from {message.author}: {message.content}')
 
     async def on_message(self, message):
-        #await message.author.send("hello user") #Sends private message to user.
+        
         prefix = "!" #Prefix for the commands
 
         if message.content.startswith(prefix):
             command = message.content[len(prefix):] #removes the lenght of the prefix to get the command sent by the user.
             isAdmin = [role.name == "Partyledare" for role in message.author.roles] #checks if the user has the Admin role.
 
-            #if command == "Hello" and isAdmin:
-                #await message.channel.send("Hello Partyledare!")
+            if command == "hello" and isAdmin:
+                await message.channel.send("Hello Partyledare!")
 
-            if command == "help": #Checks if the command is help
+            elif command == "help": #Checks if the command is help
                 await message.channel.send("I hope this helps: (this is the new prompt) \n"
                                             "```\n"
                                             "This is a list of all the commands:\n\n"
